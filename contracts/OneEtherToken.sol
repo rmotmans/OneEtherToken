@@ -16,6 +16,9 @@ contract OneEtherToken is ERC20Interface{
   mapping(address => uint256) private _balances;
   mapping(address => mapping(address => uint256)) private _allowances;
 
+  mapping(address => address[]) private _possibleSharedAccounts
+  mapping(address => address[]) private _sharedAccounts;
+
   //Contructor
   constructor() public {
       symbol = "OneEth";
@@ -36,6 +39,33 @@ contract OneEtherToken is ERC20Interface{
       _balances[msg.sender] = _balances[msg.sender].sub(amount, "ERC20: transfer amount exceeds balance");
       _totalSupply -= amount;
       msg.sender.transfer(amount);
+      return true;
+  }
+
+  //function to share account with other address
+  function shareAccount(address addressToShare) public returns (bool) {
+    bool alreadyInShared = false;
+    bool alreadyInPossibleShared = false;
+    for (uint i = 0; i < _sharedAccounts[msg.sender].length; i++){
+
+    }
+    for (uint j = 0; j < _possibleSharedAccounts[msg.sender].length; j++){
+
+    }
+    require(alreadyInShared, 'address already shares account');
+    require(alreadyInPossibleShared, 'address already a possible shared account');
+
+
+  }
+
+  //function to get the addresses u want to share an account with
+  function getPossibleSharedAccounts() public returns (address[]) {
+
+  }
+
+  //function to get the addresses u do share an acount with
+  function getSharedAccounts() public returns (address[]) {
+
   }
 
   //function to get total supply
