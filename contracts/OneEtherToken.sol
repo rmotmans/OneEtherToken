@@ -44,17 +44,20 @@ contract OneEtherToken is ERC20Interface{
 
   //function to share account with other address
   function shareAccount(address addressToShare) public returns (bool) {
-    bool alreadyInShared = false;
-    bool alreadyInPossibleShared = false;
-    for (uint i = 0; i < _sharedAccounts[msg.sender].length; i++){
+    //check if address is already between the shared addresses
+    bool alreadyInShared = _inAddressArray(_sharedAccounts[msg.sender], addressToShare);
+    require(!alreadyInShared, 'address already shares account');
+    //check if address is already between the possible shared addresses
+    bool alreadyInPossibleShared = _inAddressArray(_possibleSharedAccounts[msg.sender], addressToShare);
+    require(!alreadyInPossibleShared, 'address already a possible shared account');
+    //check if u are between their possible shared addresses
+    bool uAreThereShared = _inAddressArray(_sharedAccounts[addressToShare], msg.sender);
+
+    if (uAreThereShared){
+      
+    } else {
 
     }
-    for (uint j = 0; j < _possibleSharedAccounts[msg.sender].length; j++){
-
-    }
-    require(alreadyInShared, 'address already shares account');
-    require(alreadyInPossibleShared, 'address already a possible shared account');
-
 
   }
 
@@ -131,5 +134,15 @@ contract OneEtherToken is ERC20Interface{
 
       _allowances[owner][spender] = amount;
       emit Approval(owner, spender, amount);
+  }
+
+  //in array function
+  function _inAddressArray(address[] addressArray, address addressToCheck) internal returns (bool) {
+    for (uint index = 0; index < addressArray.length; index++){
+      if (addressArray[index] == addressToCheck){
+        return true;
+      }
+    }
+    return false;
   }
 }
